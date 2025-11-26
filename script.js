@@ -39,9 +39,8 @@ function convertToRoman(num) {
 }
 
 // Example tests:
-// console.log(convertToRoman(14));   // XIV
-// console.log(convertToRoman(798));  // DCCXCVIII
-// console.log(convertToRoman(36));   // XXXVI
+console.log(convertToRoman(14));   // XIV
+console.log(convertToRoman(798));  // DCCXCVIII
 
 // do not edit below this line
 module.exports = convertToRoman
