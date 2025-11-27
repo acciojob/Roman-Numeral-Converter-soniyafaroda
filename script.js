@@ -1,5 +1,9 @@
+const express = require("express");
+const app = express();
+app.use(express.json());
+
 function convertToRoman(num) {
-  if (num === 0) return ""; // Roman numerals have no zero
+  if (num === 0) return "";
 
   const symbols = [
     ["M", 1000],
@@ -29,7 +33,11 @@ function convertToRoman(num) {
   return result;
 }
 
-// Example tests
-console.log(convertToRoman(14));   // XIV
-console.log(convertToRoman(798));  // DCCXCVIII
-console.log(convertToRoman(100000)); // (100 × M)
+// ******** IMPORTANT: TESTED ENDPOINT ********
+app.post("/romanConverter", (req, res) => {
+  const num = req.body.input;
+  const roman = convertToRoman(num);
+  res.json({ roman });
+});
+
+app.listen(3000, () => console.log("Server running on port 3000"));
