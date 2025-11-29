@@ -5,6 +5,7 @@ app.use(express.json());
 function convertToRoman(num) {
   if (num === 0) return "";
 
+  // Extended Roman mapping to support numbers up to 100000
   const symbols = [
     ["M", 1000],
     ["CM", 900],
@@ -23,6 +24,14 @@ function convertToRoman(num) {
 
   let result = "";
 
+  // Handle numbers >= 4000 by repeating M
+  let thousands = Math.floor(num / 1000);
+  if (thousands > 0) {
+    result += "M".repeat(thousands);
+    num = num % 1000;
+  }
+
+  // Handle remaining part using standard Roman logic
   for (let [roman, value] of symbols) {
     while (num >= value) {
       result += roman;
@@ -30,7 +39,7 @@ function convertToRoman(num) {
     }
   }
 
-  return result;
+  return result.toUpperCase();
 }
 
 // ******** IMPORTANT: TESTED ENDPOINT ********
