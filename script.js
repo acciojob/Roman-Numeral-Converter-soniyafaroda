@@ -1,52 +1,37 @@
-const express = require("express");
-const app = express();
-app.use(express.json());
-
 function convertToRoman(num) {
-  if (num === 0) return "";
+    if (num === 0) return ""; // Roman numerals have no zero
 
-  // Extended Roman mapping to support numbers up to 100000
-  const symbols = [
-    ["M", 1000],
-    ["CM", 900],
-    ["D", 500],
-    ["CD", 400],
-    ["C", 100],
-    ["XC", 90],
-    ["L", 50],
-    ["XL", 40],
-    ["X", 10],
-    ["IX", 9],
-    ["V", 5],
-    ["IV", 4],
-    ["I", 1]
-  ];
+    // Roman numeral mapping
+    const romanMap = [
+        { value: 100000, symbol: "ↈ" },    // Ten times 10k (Unicode)
+        { value: 50000, symbol: "ↇ" },     // Five times 10k
+        { value: 10000, symbol: "ↂ" },     // 10,000
+        { value: 9000, symbol: "Mↂ" },
+        { value: 5000, symbol: "ↁ" },      // 5,000
+        { value: 4000, symbol: "Mↁ" },
+        { value: 1000, symbol: "M" },
+        { value: 900, symbol: "CM" },
+        { value: 500, symbol: "D" },
+        { value: 400, symbol: "CD" },
+        { value: 100, symbol: "C" },
+        { value: 90, symbol: "XC" },
+        { value: 50, symbol: "L" },
+        { value: 40, symbol: "XL" },
+        { value: 10, symbol: "X" },
+        { value: 9, symbol: "IX" },
+        { value: 5, symbol: "V" },
+        { value: 4, symbol: "IV" },
+        { value: 1, symbol: "I" }
+    ];
 
-  let result = "";
+    let result = "";
 
-  // Handle numbers >= 4000 by repeating M
-  let thousands = Math.floor(num / 1000);
-  if (thousands > 0) {
-    result += "M".repeat(thousands);
-    num = num % 1000;
-  }
-
-  // Handle remaining part using standard Roman logic
-  for (let [roman, value] of symbols) {
-    while (num >= value) {
-      result += roman;
-      num -= value;
+    for (let i = 0; i < romanMap.length; i++) {
+        while (num >= romanMap[i].value) {
+            result += romanMap[i].symbol;
+            num -= romanMap[i].value;
+        }
     }
-  }
 
-  return result.toUpperCase();
+    return result.toUpperCase();
 }
-
-// ******** IMPORTANT: TESTED ENDPOINT ********
-app.post("/romanConverter", (req, res) => {
-  const num = req.body.input;
-  const roman = convertToRoman(num);
-  res.json({ roman });
-});
-
-app.listen(3000, () => console.log("Server running on port 3000"));
